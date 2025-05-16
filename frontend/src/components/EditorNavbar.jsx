@@ -18,9 +18,9 @@ const EditiorNavbar = () => {
         <p>Welcome , Do your Own Code!!</p>
         <div className="flex items-center gap-4">
           <button onClick={() => navigate("/")}className="bg-[#1A1919] text-white px-4 py-2 rounded hover:bg-[#333]"> Home </button>
-            <i className='p-[8px] btn bg-black rounded-[5px] cursor-pointer text-[20px] text-white'>
+            {/* <i className='p-[8px] btn bg-black rounded-[5px] cursor-pointer text-[20px] text-white'>
             <FiDownload />
-          </i>
+          </i> */}
         </div>
 
       </div>
