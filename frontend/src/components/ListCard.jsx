@@ -37,7 +37,7 @@ const ListCard = ({ item }) => {
           <img className='w-[60px]' src={img} alt="" />
           <div>
             <h4 className='text-[15px]'>{item.title}</h4>
-            <p className='text-[gray] text-[12px]'>Created in {new Date(item.date).toDateString()}</p>
+            <p className='text-[gray] text-[12px]'>Created on {new Date(item.date).toDateString()}</p>
           </div>
         </div>
         <div>
@@ -47,7 +47,7 @@ const ListCard = ({ item }) => {
 
       {
         isDeleteModelShow ? <div className="model fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.1)] flex justify-center items-center flex-col">
-          <div className="mainModel w-[25vw] h-[25vh] bg-[#141414] rounded-lg p-[20px]">
+          <div className="mainModel w-[20vw] h-[20vh] bg-[#141414] rounded-lg p-[20px]">
             <h4 className=''>Do you want to delete <br />
               this project</h4>
             <div className='flex w-full mt-5 items-center gap-[10px]'>

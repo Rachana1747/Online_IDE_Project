@@ -135,7 +135,7 @@ const Editior = () => {
                 setHtmlCode(value || "");
                 run();
               }}
-              height="82vh"
+              height="86vh"
               theme={isLightMode ? "vs-light" : "vs-dark"}
               language="html"
               value={htmlCode}
@@ -146,7 +146,7 @@ const Editior = () => {
                 setCssCode(value || "");
                 run();
               }}
-              height="82vh"
+              height="86vh"
               theme={isLightMode ? "vs-light" : "vs-dark"}
               language="css"
               value={cssCode}
@@ -157,7 +157,7 @@ const Editior = () => {
                 setJsCode(value || "");
                 run();
               }}
-              height="82vh"
+              height="86vh"
               theme={isLightMode ? "vs-light" : "vs-dark"}
               language="javascript"
               value={jsCode}
@@ -168,7 +168,7 @@ const Editior = () => {
         {!isExpanded && (
           <iframe
             id="iframe"
-            className="w-[50%] min-h-[82vh] bg-[#fff] text-black"
+            className="w-[50%] min-h-[86vh] bg-[#fff] text-black"
             title="output"
           />
         )}

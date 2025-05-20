@@ -65,6 +65,7 @@ html{
 .lightMode .tabs{
   background-color: #f7f7f7;
 }
+
 .lightMode .tabs .tab{
   background-color: #c2c1c1;
   color: #000;
@@ -76,4 +77,8 @@ html{
 }
 .lightMode h1{
   color: black;
+}
+
+.lightMode  .EditiorNavbar {
+  background-color: #141414;
 }

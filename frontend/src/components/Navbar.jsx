@@ -45,7 +45,7 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
       <div className="navbar flex items-center justify-between px-[100px] h-[80px] bg-[#141414]">
         <div className="logo">
           <div className="flex items-center gap-2">
-                <img className="w-[60px]" src={logo} alt="" />
+                <img className="w-[40px]" src={logo} alt="" />
                 <h1 className="text-white text-2xl font-semibold">Gradious</h1>
           </div>
         </div>
