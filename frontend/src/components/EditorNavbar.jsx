@@ -1,32 +1,75 @@
-import React from 'react'
-import logo from "../images/logo.jpeg"
-import { FiDownload } from "react-icons/fi";
-import { useNavigate ,Link } from 'react-router-dom';
-import { IoMdLogOut } from 'react-icons/io';
-
+import React, { useEffect, useState } from 'react';
+import logo from "../images/logo.jpeg";
+import { Link, useNavigate } from 'react-router-dom';
+import Avatar from 'react-avatar';
+import { IoMdLogOut } from "react-icons/io";
+import { api_base_url, toggleClass } from '../helper';
 
 const EditiorNavbar = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch(api_base_url + "/getUserDetails", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: localStorage.getItem("userId")
+      })
+    }).then(res => res.json()).then(data => {
+      if (data.success) {
+        setData(data.user);
+      } else {
+        setError(data.message);
+      }
+    });
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("isLoggedIn");
+    navigate("/login");
+  };
+
   return (
     <>
-      <div className="EditiorNavbar flex items-center justify-between px-[100px] h-[50px] bg-[#141414]">
+      <div className="EditiorNavbar flex items-center justify-between px-[100px] h-[60px] bg-[#141414]">
         <div className="logo">
           <div className="flex items-center gap-2">
-              <img className="w-[40px]" src={logo} alt="" />
-              <h1 className="text-white text-2xl font-semibold">Gradious</h1>
+            <img className="w-[40px]" src={logo} alt="Logo" />
+            <h1 className="text-white text-2xl font-semibold">Gradious</h1>
           </div>
         </div>
-        <p>Welcome , Do your Own Code!!</p>
-        <div className="flex items-center gap-4">
+        <p className="text-white">Welcome, Do your Own Code!!</p>
+        <div className="flex items-center gap-4 text-white">
           <Link to="/" className='hover:text-gray-300'>Home</Link>
-            {/* <i className='p-[8px] btn bg-black rounded-[5px] cursor-pointer text-[20px] text-white'>
-            <FiDownload />
-          </i> */}
+          <Avatar
+            onClick={() => { toggleClass(".dropDownNavbar", "hidden") }}
+            name={data ? data.name : ""}
+            size="40"
+            round="50%"
+            className='cursor-pointer ml-2'
+          />
         </div>
 
+        {/* Dropdown for name and logout */}
+        <div className='dropDownNavbar hidden absolute right-[60px] top-[80px] shadow-lg shadow-black/50 p-[10px] rounded-lg bg-[#1A1919] w-[150px] h-[110px] text-white'>
+          <div className='py-[10px] border-b-[1px] border-b-[#fff]'>
+            <h3 className='text-[17px]' style={{ lineHeight: 1 }}>{data ? data.name : ""}</h3>
+          </div>
+          <i onClick={logout} className='flex items-center gap-2 mt-3 mb-2 cursor-pointer' style={{ fontStyle: "normal" }}>
+            <IoMdLogOut className='text-[20px]' />Log Out
+          </i>
+        </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default EditiorNavbar
+export default EditiorNavbar;

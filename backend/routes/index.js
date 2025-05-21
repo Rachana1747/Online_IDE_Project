@@ -41,7 +41,6 @@ router.post("/login", async (req, res) => {
   let user = await userModel.findOne({ email: email });
 
   if (user) {
-    // Rename the second `res` to avoid conflict
     bcrypt.compare(password, user.password, function (err, isMatch) {
       if (err) {
         return res.json({ success: false, message: "An error occurred", error: err });
@@ -59,7 +58,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/getUserDetails", async (req, res) => {
-  console.log("Called")
+  // console.log("Called")
   let { userId } = req.body;
   let user = await userModel.findOne({ _id: userId });
   if (user) {
