@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import EditiorNavbar from '../components/EditorNavbar';
 import Editor from '@monaco-editor/react';
 import { MdLightMode } from 'react-icons/md';
@@ -16,7 +16,7 @@ const Editior = () => {
   const [rightTab, setRightTab] = useState("output");
   const [consoleLogs, setConsoleLogs] = useState([]);
   const [outputSrcDoc, setOutputSrcDoc] = useState("");
-
+  const editorRef = useRef(null);
 
   const { projectID } = useParams();
 
@@ -33,26 +33,58 @@ const Editior = () => {
     }
   };
 
-const run = () => {
-  setConsoleLogs([]); 
-  const html = htmlCode;
-  const css = `<style>${cssCode}</style>`;
-  const js = `
-    <script>
-      (function(){
-        const originalLog = console.log;
-        console.log = function(...args) {
-          window.parent.postMessage({ type: "console", data: args.join(" ") }, "*");
-          originalLog.apply(console, args);
-        };
+ const run = () => {
+   setConsoleLogs([]);
+  const jsWithConsoleCapture = `
+    (function(){
+      const originalLog = console.log;
+      console.log = function(...args) {
+        window.parent.postMessage({ type: "console", data: args.join(" ") }, "*");
+        originalLog.apply(console, args);
+      };
+      try {
         ${jsCode}
-      })();
-    </script>`;
+      } catch (err) {
+        console.log("Error: " + err.message);
+      }
+    })();
+  `;
 
-  const combinedCode = html + css + js;
-
-  setOutputSrcDoc(combinedCode);
+  const src = `
+    <html>
+      <head>
+        <style>${cssCode}</style>
+      </head>
+      <body>
+        ${htmlCode}
+        <script>
+          ${jsWithConsoleCapture}
+        <\/script>
+      </body>
+    </html>
+  `;
+  setOutputSrcDoc(src);
 };
+
+
+  const insertLibrary = (url) => {
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      const selection = editor.getSelection();
+      const range = {
+        startLineNumber: selection.startLineNumber,
+        startColumn: selection.startColumn,
+        endLineNumber: selection.endLineNumber,
+        endColumn: selection.endColumn,
+      };
+      const tag = url.endsWith('.js')
+        ? `<script src=\"${url}\"></script>`
+        : `<link rel=\"stylesheet\" href=\"${url}\" />`;
+      editor.executeEdits("insert-library", [
+        { range, text: tag, forceMoveMarkers: true }
+      ]);
+    }
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -119,16 +151,30 @@ const run = () => {
     };
   }, [projectID, htmlCode, cssCode, jsCode]);
 
- 
-  useEffect(() => {
+ useEffect(() => {
     const handleMessage = (event) => {
       if (event.data.type === "console") {
-        setConsoleLogs(prev => [...prev, event.data.data]);
+        setConsoleLogs((prevLogs) => [...prevLogs, event.data.data]);
       }
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
   }, []);
+
+  const libraryOptions = [
+  { name: "jQuery", url: "https://code.jquery.com/jquery-3.6.0.min.js" },
+  { name: "Lodash", url: "https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js" },
+  { name: "Axios", url: "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" },
+  { name: "Bootstrap CSS", url: "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" },
+  { name: "Bootstrap JS", url: "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" },
+  { name: "Tailwind CSS", url: "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" },
+  { name: "Font Awesome", url: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" },
+  { name: "Anime.js", url: "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" },
+  { name: "Chart.js", url: "https://cdn.jsdelivr.net/npm/chart.js" },
+  { name: "Moment.js", url: "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" },
+  { name: "GSAP", url: "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js" }
+];
+
 
   return (
     <>
@@ -143,6 +189,12 @@ const run = () => {
                 ${tab === "css" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>CSS</div>
               <div onClick={() => setTab("js")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
                 ${tab === "js" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>JavaScript</div>
+              <select className="ml-2 bg-[#1E1E1E] text-white  px-2 py-1 text-sm" onChange={(e) => insertLibrary(e.target.value)}>
+                <option value="">Add Library</option>
+                {libraryOptions.map((lib, idx) => (
+                  <option key={idx} value={lib.url}>{lib.name}</option>
+                ))}
+              </select>
             </div>
             <div className="flex items-center gap-2">
               <i className="text-[20px] cursor-pointer" onClick={changeTheme}><MdLightMode /></i>
@@ -152,6 +204,7 @@ const run = () => {
 
           {tab === "html" ? (
             <Editor
+              onMount={(editor) => (editorRef.current = editor)}
               onChange={(value) => {
                 setHtmlCode(value || "");
                 run();
@@ -163,6 +216,7 @@ const run = () => {
             />
           ) : tab === "css" ? (
             <Editor
+              onMount={(editor) => (editorRef.current = editor)}
               onChange={(value) => {
                 setCssCode(value || "");
                 run();
@@ -174,6 +228,7 @@ const run = () => {
             />
           ) : (
             <Editor
+              onMount={(editor) => (editorRef.current = editor)}
               onChange={(value) => {
                 setJsCode(value || "");
                 run();
@@ -196,7 +251,8 @@ const run = () => {
           setRightTab('output');
           run();
         }}>Output</button>
-      <button className={`px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] ${rightTab === 'console' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
+      <button className={`px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] 
+      ${rightTab === 'console' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
         onClick={() => {
           setRightTab('console');
         }} >Console</button>
