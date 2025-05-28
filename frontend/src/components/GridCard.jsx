@@ -16,7 +16,7 @@ const GridCard = ({item}) => {
        </div>
         <div className='flex items-center justify-between'>
           <p className='text-[12px] text-[gray]'>Created on {new Date(item.date).toDateString()}</p>
-          <img onClick={()=>{setIsDeleteModelShow(true)}} className='w-[30px] cursor-pointer' src={deleteImg} alt="" />
+          <img onClick={()=>{setIsDeleteModelShow(true)}} className='w-[20px] cursor-pointer' src={deleteImg} alt="" />
         </div>
       </div>
       {
@@ -34,5 +34,4 @@ const GridCard = ({item}) => {
     </>
   )
 }
-
 export default GridCard

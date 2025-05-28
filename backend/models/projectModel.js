@@ -11,8 +11,7 @@ const projectSchema = new mongoose.Schema({
   },
   htmlCode: {
     type: String,
-    default: `
-    <!DOCTYPE html>
+    default: `<!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
@@ -27,8 +26,7 @@ const projectSchema = new mongoose.Schema({
   },
   cssCode: {
     type: String,
-    default: `
-    body{
+    default: `body{
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -36,7 +34,7 @@ const projectSchema = new mongoose.Schema({
   },
   jsCode: {
     type: String,
-    default: 'console.log("Hello World")'
+    default:'console.log("Hello World");'
   }
 });
 

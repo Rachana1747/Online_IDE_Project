@@ -5,6 +5,7 @@ import { MdLightMode } from 'react-icons/md';
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import { api_base_url } from '../helper';
 import { useParams } from 'react-router-dom';
+import { FaPlay } from "react-icons/fa";
 
 const Editior = () => {
   const [tab, setTab] = useState("html");
@@ -13,8 +14,11 @@ const Editior = () => {
   const [htmlCode, setHtmlCode] = useState("<h1>Hello world</h1>");
   const [cssCode, setCssCode] = useState("body { background-color: #f4f4f4; }");
   const [jsCode, setJsCode] = useState("// some comment");
+  const [rightTab, setRightTab] = useState("output");
+  const [consoleLogs, setConsoleLogs] = useState([]);
+  const [outputSrcDoc, setOutputSrcDoc] = useState("");
 
-  // Extract projectID from URL using useParams
+
   const { projectID } = useParams();
 
   const changeTheme = () => {
@@ -30,16 +34,26 @@ const Editior = () => {
     }
   };
 
-  const run = () => {
-    const html = htmlCode;
-    const css = `<style>${cssCode}</style>`;
-    const js = `<script>${jsCode}</script>`;
-    const iframe = document.getElementById("iframe");
+const run = () => {
+  setConsoleLogs([]); 
+  const html = htmlCode;
+  const css = `<style>${cssCode}</style>`;
+  const js = `
+    <script>
+      (function(){
+        const originalLog = console.log;
+        console.log = function(...args) {
+          window.parent.postMessage({ type: "console", data: args.join(" ") }, "*");
+          originalLog.apply(console, args);
+        };
+        ${jsCode}
+      })();
+    </script>`;
 
-    if (iframe) {
-      iframe.srcdoc = html + css + js;
-    }
-  };
+  const combinedCode = html + css + js;
+
+  setOutputSrcDoc(combinedCode);
+};
 
   useEffect(() => {
     setTimeout(() => {
@@ -56,7 +70,7 @@ const Editior = () => {
       },
       body: JSON.stringify({
         userId: localStorage.getItem("userId"),
-        projId: projectID // Use projectID here
+        projId: projectID
       })
     })
       .then(res => res.json())
@@ -70,9 +84,7 @@ const Editior = () => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === 's') {
-        event.preventDefault(); // Prevent the default save file dialog
-  
-        // Ensure that projectID and code states are updated and passed to the fetch request
+        event.preventDefault();
         fetch(api_base_url + "/updateProject", {
           mode: "cors",
           method: "POST",
@@ -81,10 +93,10 @@ const Editior = () => {
           },
           body: JSON.stringify({
             userId: localStorage.getItem("userId"),
-            projId: projectID,  // Make sure projectID is correct
-            htmlCode: htmlCode,  // Passing the current HTML code
-            cssCode: cssCode,    // Passing the current CSS code
-            jsCode: jsCode       // Passing the current JS code
+            projId: projectID,
+            htmlCode: htmlCode,
+            cssCode: cssCode,
+            jsCode: jsCode
           })
         })
         .then(res => res.json())
@@ -101,15 +113,23 @@ const Editior = () => {
         });
       }
     };
-  
+
     window.addEventListener('keydown', handleKeyDown);
-  
-    // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [projectID, htmlCode, cssCode, jsCode]);
 
+ 
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data.type === "console") {
+        setConsoleLogs(prev => [...prev, event.data.data]);
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   return (
     <>
@@ -118,16 +138,13 @@ const Editior = () => {
         <div className={`left w-[${isExpanded ? "100%" : "50%"}]`}>
           <div className="tabs flex items-center justify-between gap-2 w-full bg-[#1A1919] h-[50px] px-[40px]">
             <div className="tabs flex items-center gap-2">
-             <div onClick={() => setTab("html")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
-              ${tab === "html" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>HTML</div>
-
-            <div onClick={() => setTab("css")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
-              ${tab === "css" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>CSS
-           </div>
-           <div onClick={() => setTab("js")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
-          ${tab === "js" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>JavaScript</div>
-         </div>
-
+              <div onClick={() => setTab("html")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
+                ${tab === "html" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>HTML</div>
+              <div onClick={() => setTab("css")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
+                ${tab === "css" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>CSS</div>
+              <div onClick={() => setTab("js")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
+                ${tab === "js" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>JavaScript</div>
+            </div>
             <div className="flex items-center gap-2">
               <i className="text-[20px] cursor-pointer" onClick={changeTheme}><MdLightMode /></i>
               <i className="text-[20px] cursor-pointer" onClick={() => { setIsExpanded(!isExpanded); }}><AiOutlineExpandAlt /></i>
@@ -171,12 +188,43 @@ const Editior = () => {
         </div>
 
         {!isExpanded && (
-          <iframe
-            id="iframe"
-            className="w-[50%] min-h-[86vh] bg-[#fff] text-black"
-            title="output"
-          />
-        )}
+          <div className="w-[50%] min-h-[86vh] flex flex-col bg-white text-black">
+      <div className="flex justify-between items-center bg-[#1A1919] text-white px-4 py-2">
+       <div className="flex gap-2">
+       <button
+        className={`px-4 py-1 border border-gray-600 ${rightTab === 'output' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
+        onClick={() => {
+          setRightTab('output');
+          run();
+        }}>Output</button>
+      <button className={`px-4 py-1 border border-gray-600 ${rightTab === 'console' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
+        onClick={() => {
+          setRightTab('console');
+        }} >Console</button>
+    </div>
+    <button className="px-3 py-1 border border-gray-600 bg-[#2d7fcc]" onClick={run}>
+      <FaPlay />
+    </button>
+  </div>
+
+  {rightTab === 'output' ? (
+    <iframe
+      className="w-full flex-1 bg-white text-black"
+      title="output"
+      srcDoc={outputSrcDoc}
+    />
+  ) : (
+    <div className="p-4 overflow-y-auto flex-1 text-sm font-mono">
+      {consoleLogs.length === 0 ? (
+        <div>No console output yet.</div>
+      ) : (
+        consoleLogs.map((log, idx) => <div key={idx}>{log}</div>)
+      )}
+    </div>
+     )}
+    </div>
+
+ )}
       </div>
     </>
   );

@@ -41,7 +41,7 @@ const ListCard = ({ item }) => {
           </div>
         </div>
         <div>
-          <img onClick={(e) => { e.stopPropagation(); setIsDeleteModelShow(true) }} className='w-[30px] cursor-pointer mr-4' src={deleteImg} alt="" />
+          <img onClick={(e) => { e.stopPropagation(); setIsDeleteModelShow(true) }} className='w-[20px] cursor-pointer mr-4' src={deleteImg} alt="" />
         </div>
       </div>
 

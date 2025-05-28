@@ -16,5 +16,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.3",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "kill-port": "^2.0.1"
   }
 }

@@ -136,7 +136,7 @@ const Home = () => {
         }
       </div>
 
-      {/* Model for Creating a New Project */}
+      {/*Creating a New Project */}
       {isCreateModelShow &&
         <div className="createModelCon fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgb(0,0,0,0.1)] flex items-center justify-center">
           <div className="createModel w-[25vw] h-[25vh] shadow-lg shadow-black/50 bg-[#141414] rounded-[10px] p-[20px]">
