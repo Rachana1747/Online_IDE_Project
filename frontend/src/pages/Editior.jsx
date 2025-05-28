@@ -5,7 +5,6 @@ import { MdLightMode } from 'react-icons/md';
 import { AiOutlineExpandAlt } from "react-icons/ai";
 import { api_base_url } from '../helper';
 import { useParams } from 'react-router-dom';
-import { FaPlay } from "react-icons/fa";
 
 const Editior = () => {
   const [tab, setTab] = useState("html");
@@ -192,21 +191,19 @@ const run = () => {
       <div className="flex justify-between items-center bg-[#1A1919] text-white px-4 py-2">
        <div className="flex gap-2">
        <button
-        className={`px-4 py-1 border border-gray-600 ${rightTab === 'output' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
+        className={`px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] ${rightTab === 'output' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
         onClick={() => {
           setRightTab('output');
           run();
         }}>Output</button>
-      <button className={`px-4 py-1 border border-gray-600 ${rightTab === 'console' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
+      <button className={`px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] ${rightTab === 'console' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
         onClick={() => {
           setRightTab('console');
         }} >Console</button>
     </div>
-    <button className="px-3 py-1 border border-gray-600 bg-[#2d7fcc]" onClick={run}>
-      <FaPlay />
-    </button>
+    <button className="px-3 py-1 border border-gray-600 hover:bg-[#5b5d5e]" onClick={run}>Run</button>
   </div>
-
+  
   {rightTab === 'output' ? (
     <iframe
       className="w-full flex-1 bg-white text-black"
