@@ -101,7 +101,7 @@ const Home = () => {
     <>
       <Navbar isGridLayout={isGridLayout} setIsGridLayout={setIsGridLayout} />
       <div className='flex items-center justify-between px-[100px] my-[40px]'>
-        <h2 className='text-2xl'>Hi, {userData ? userData.username : ""}</h2>
+        <h2 className='text-2xl'>Hi, {userData ? userData.name : ""}</h2>
         <div className='flex items-center gap-1'>
           {/* Search Bar */}
           <div className="inputBox !w-[350px]">
