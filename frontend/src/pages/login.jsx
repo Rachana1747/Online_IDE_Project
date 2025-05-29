@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import image from "../images/authPageSide.png";
 import { api_base_url } from '../helper';
 
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");

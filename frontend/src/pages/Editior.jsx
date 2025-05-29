@@ -6,6 +6,8 @@ import { AiOutlineExpandAlt } from "react-icons/ai";
 import { api_base_url } from '../helper';
 import { useParams } from 'react-router-dom';
 import { IoIosSave } from "react-icons/io";
+import { toast } from 'react-toastify';
+
 
 const Editior = () => {
   const [tab, setTab] = useState("html");
@@ -158,14 +160,14 @@ const handleSave = () => {
   .then(res => res.json())
   .then(data => {
     if (data.success) {
-      alert("Project saved successfully");
+        toast.success("Project saved successfully!");
     } else {
-      alert("Something went wrong");
+       toast.error("Something went wrong while saving.");
     }
   })
   .catch((err) => {
     console.error("Error saving project:", err);
-    alert("Failed to save project. Please try again.");
+    toast.error("Failed to save project. Try again.");
   });
 };
 
@@ -190,14 +192,14 @@ useEffect(() => {
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            alert("Project saved successfully");
+            toast.success("Project saved successfully!");
           } else {
-            alert("Something went wrong");
+            toast.error("Something went wrong while saving.");
           }
         })
         .catch((err) => {
-          console.error("Error saving project:", err);
-          alert("Failed to save project. Please try again.");
+           console.error("Error saving project:", err);
+           toast.error("Failed to save project. Try again.");
         });
       }
     };

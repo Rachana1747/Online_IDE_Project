@@ -6,6 +6,8 @@ import NoPage from './pages/NoPage';
 import SignUp from './pages/SignUp';
 import Login from './pages/login';
 import Editior from './pages/Editior';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   let isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -20,6 +22,15 @@ const App = () => {
           <Route path="*" element={isLoggedIn ? <NoPage />: <Navigate to="/login"/>} />
         </Routes>
       </BrowserRouter>
+       <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </>
   )
 }

@@ -22,7 +22,7 @@ const projectSchema = new mongoose.Schema({
     <body>
     
     </body>
-    </html>`
+</html>`
   },
   cssCode: {
     type: String,
@@ -30,7 +30,7 @@ const projectSchema = new mongoose.Schema({
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-    }`
+}`
   },
   jsCode: {
     type: String,
