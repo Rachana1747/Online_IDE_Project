@@ -143,7 +143,8 @@ const Editior = () => {
   }, [projectID]);
 
 const handleSave = () => {
-  fetch(api_base_url + "/updateProject", {
+  
+  fetch(api_base_url + "/updateProject",{
     mode: "cors",
     method: "POST",
     headers: {
@@ -248,7 +249,7 @@ useEffect(() => {
                 ${tab === "css" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>CSS</div>
               <div onClick={() => setTab("js")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
                 ${tab === "js" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>JavaScript</div>
-              <select className="ml-2 bg-[#1E1E1E] text-white  px-2 py-1 text-sm" onChange={(e) => insertLibrary(e.target.value)}>
+              <select className=" tab ml-2 bg-[#1E1E1E] text-white  px-2 py-1 text-sm" onChange={(e) => insertLibrary(e.target.value)}>
                 <option value="">Add Library</option>
                 {libraryOptions.map((lib, idx) => (
                   <option key={idx} value={lib.url}>{lib.name}</option>
@@ -300,15 +301,15 @@ useEffect(() => {
 
         {!isExpanded && (
           <div className="w-[50%] min-h-[86vh] flex flex-col bg-white text-black">
-            <div className="flex justify-between items-center bg-[#1A1919] text-white px-4 py-2">
+            <div className=" tabs flex justify-between items-center bg-[#1A1919] text-white px-4 py-2">
               <div className="flex gap-2">
                 <button
-                  className={`px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] ${rightTab === 'output' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
+                  className={` tab px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] ${rightTab === 'output' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
                   onClick={() => {
                     setRightTab('output');
                     // run();
                   }}>Output</button>
-                <button className={`px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] 
+                <button className={` tab px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] 
                 ${rightTab === 'console' ? 'bg-gray-700' : 'bg-[#1E1E1E]'}`}
                   onClick={() => {
                     setRightTab('console');
@@ -341,4 +342,3 @@ useEffect(() => {
 };
 
 export default Editior;
-
