@@ -5,7 +5,7 @@ import Avatar from 'react-avatar';
 import { IoMdLogOut } from "react-icons/io";
 import { api_base_url, toggleClass } from '../helper';
 
-const EditiorNavbar = () => {
+const HomeNavbar= () => {
   const navigate = useNavigate();
 
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
@@ -42,14 +42,13 @@ const EditiorNavbar = () => {
 
   return (
     <>
-      <div className="EditiorNavbar flex items-center justify-between px-[100px] h-[60px] bg-[#141414]">
+      <div className="EditiorNavbar flex items-center justify-between px-[100px] h-[80px] bg-[#141414]">
         <div className="logo">
           <div className="flex items-center gap-2">
             <img className="w-[40px]" src={logo} alt="Logo" />
             <h1 className="text-white text-2xl font-semibold">Gradious</h1>
           </div>
         </div>
-        <p className="text-white">Welcome, Do your Own Code!!</p>
         <div className="links flex items-center gap-4">
          
     {isLoggedIn ? (
@@ -86,4 +85,4 @@ const EditiorNavbar = () => {
   );
 };
 
-export default EditiorNavbar;
+export default HomeNavbar;

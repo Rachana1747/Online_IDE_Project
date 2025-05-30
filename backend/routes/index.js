@@ -5,6 +5,7 @@ var jwt = require("jsonwebtoken");
 var userModel = require("../models/userModel");
 var projectModel = require("../models/projectModel");
 
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
@@ -37,25 +38,46 @@ router.post("/signUp", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  let { email, password } = req.body;
-  let user = await userModel.findOne({ email: email });
+  const { identifier, password } = req.body;
 
-  if (user) {
-    bcrypt.compare(password, user.password, function (err, isMatch) {
+  try {
+    const user = await userModel.findOne({
+      $or: [
+        { email: identifier },
+        { username: identifier }
+      ]
+    });
+
+    if (!user) {
+      return res.json({ success: false, message: "User not found!" });
+    }
+    bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err) {
         return res.json({ success: false, message: "An error occurred", error: err });
       }
-      if (isMatch) {
-        let token = jwt.sign({ email: user.email, userId: user._id }, secret);
-        return res.json({ success: true, message: "User logged in successfully", token: token, userId: user._id });
-      } else {
-        return res.json({ success: false, message: "Invalid email or password" });
+
+      if (!isMatch) {
+        return res.json({ success: false, message: "Invalid email/username or password" });
       }
+      const token = jwt.sign(
+        { email: user.email, userId: user._id },
+        secret,
+        { expiresIn: '1d' }
+      );
+
+      return res.json({
+        success: true,
+        message: "User logged in successfully",
+        token: token,
+        userId: user._id
+      });
     });
-  } else {
-    return res.json({ success: false, message: "User not found!" });
+
+  } catch (err) {
+    return res.json({ success: false, message: "Server error", error: err });
   }
 });
+
 
 router.post("/getUserDetails", async (req, res) => {
   // console.log("Called")
@@ -141,6 +163,22 @@ router.post("/updateProject", async (req, res) => {
     return res.json({ success: false, message: "User not found!" });
   }
 });
+
+// router.post("/updateProjectTitle", async (req, res) => {
+//   const { progId, userId, newTitle } = req.body;
+
+//   try {
+//     await projectModel.updateOne(
+//       { _id: progId, createdBy: userId },
+//       { $set: { title: newTitle } }
+//     );
+//     res.json({ success: true, message: "Project title updated" });
+//   } catch (err) {
+//     console.error(err);
+//     res.json({ success: false, message: "Update failed" });
+//   }
+// });
+
 
 
 module.exports = router;

@@ -13,9 +13,24 @@ const Editior = () => {
   const [tab, setTab] = useState("html");
   const [isLightMode, setIsLightMode] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [htmlCode, setHtmlCode] = useState("<h1>Hello world</h1>");
-  const [cssCode, setCssCode] = useState("body { background-color: #f4f4f4; }");
-  const [jsCode, setJsCode] = useState("// some comment");
+  const [htmlCode, setHtmlCode] = useState(`<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+    </head>
+    <body>
+    
+    </body>
+</html>`);
+  const [cssCode, setCssCode] = useState( `body{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+}`);
+  const [jsCode, setJsCode] = useState(`console.log("Hello world")`);
   const [rightTab, setRightTab] = useState("output");
   const [consoleLogs, setConsoleLogs] = useState([]);
   const [outputSrcDoc, setOutputSrcDoc] = useState("");
@@ -39,14 +54,12 @@ const Editior = () => {
   const hiddenIframeRef = useRef(null);
 
   useEffect(() => {
-    // Create hidden iframe once
     const iframe = document.createElement("iframe");
     iframe.style.display = "none";
     document.body.appendChild(iframe);
     hiddenIframeRef.current = iframe;
 
     return () => {
-      // Cleanup on unmount
       if (hiddenIframeRef.current) {
         document.body.removeChild(hiddenIframeRef.current);
       }
@@ -55,7 +68,6 @@ const Editior = () => {
 
   const run = () => {
     setConsoleLogs([]);
-
     const js = `(function(){
         if (!window._hasLoggedPatch) {
           const originalLog = console.log;

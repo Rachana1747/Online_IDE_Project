@@ -1,159 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
-import ListCard from '../components/ListCard';
-import GridCard from '../components/GridCard';
-import { api_base_url } from '../helper';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React from 'react'
+// import Navbar from '../components/Navbar'
+import { useNavigate } from 'react-router-dom'
+import HomeNavbar from '../components/HomeNavbar';
 
-const Home = () => {
-  
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
-  const [searchQuery, setSearchQuery] = useState(''); // State for search query
-  const [projTitle, setProjTitle] = useState("");
-  const navigate = useNavigate();
-  const [isCreateModelShow, setIsCreateModelShow] = useState(false);
+function Dashboard() { 
+const navigate = useNavigate();
 
-  // Filter data based on search query
-  const filteredData = data ? data.filter(item =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase()) // Case insensitive filtering
-  ) : [];
+  const handleStartCoding = () => {
+  navigate("/editor");
+};
 
-  const createProj = (e) => {
-    if (projTitle === "") {
-      toast.error("Please Enter Project Title");
-    } else {
-      fetch(api_base_url + "/createProject", {
-        mode: "cors",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: projTitle,
-          userId: localStorage.getItem("userId")
-        })
-      }).then(res => res.json()).then(data => {
-        if (data.success) {
-          setIsCreateModelShow(false);
-          setProjTitle("");
-          toast.success("Project Created Successfully");
-          navigate(`/editor/${data.projectId}`);
-        } else {
-          toast.error("Something Went Wrong");
-        }
-      });
-    }
-  };
-
-  const getProj = () => {
-    fetch(api_base_url + "/getProjects", {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: localStorage.getItem("userId")
-      })
-    }).then(res => res.json()).then(data => {
-      if (data.success) {
-        setData(data.projects);
-      } else {
-        setError(data.message);
-      }
-    });
-  };
-
-  useEffect(() => {
-    getProj();
-  }, []);
-
-
-  const [userData, setUserData] = useState(null);
-  const [userError, setUserError] = useState("");;
-
-  useEffect(() => {
-    fetch(api_base_url + "/getUserDetails", {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: localStorage.getItem("userId")
-      })
-    }).then(res => res.json()).then(data => {
-      if (data.success) {
-        setUserData(data.user);
-      }
-      else {
-        setUserError(data.message);
-      }
-    })
-  }, [])
-
-  const [isGridLayout, setIsGridLayout] = useState(false);
-
-
+const handleSignUp=()=>{
+  navigate("/signUp");
+}
   return (
     <>
-      <Navbar isGridLayout={isGridLayout} setIsGridLayout={setIsGridLayout} />
-      <div className='flex items-center justify-between px-[100px] my-[40px]'>
-        <h2 className='text-2xl'>Hi, {userData ? userData.name : ""}</h2>
-        <div className='flex items-center gap-1'>
-          {/* Search Bar */}
-          <div className="inputBox !w-[350px]">
-            <input
-              type="text"
-              placeholder='Search Here... !'
-              value={searchQuery} // Bind search input to searchQuery state
-              onChange={(e) => setSearchQuery(e.target.value)} // Update searchQuery on input change
-            />
-          </div>
-          <button onClick={() => { setIsCreateModelShow(true) }} className='btnBlue rounded-[5px] mb-4 text-[20px] !p-[5px] !px-[10px]'>+</button>
-        </div>
-      </div>
+    <HomeNavbar/>
+     <div className="w-screen h-screen flex flex-col items-center text-white px-4 pt-24">
 
-      {/* Project Display */}
-      <div className="cards">
-        {
-          isGridLayout ?
-            <div className='grid px-[100px]'>
-              {
-                filteredData.length > 0 ? filteredData.map((item, index) => (
-                  <GridCard key={index} item={item} />
-                )) : <p>No projects found</p>
-              }
-            </div>
-            : <div className='list px-[100px]'>
-              {
-                filteredData.length > 0 ? filteredData.map((item, index) => (
-                  <ListCard key={index} item={item} />
-                )) : <p>No projects found</p>
-              }
-            </div>
-        }
-      </div>
+  <h1 className="text-center text-4xl md:text-4xl font-bold tracking-wide leading-tight animate-fadeInUp">
+   Where you <span className="text-pink-400">write</span>, <span className="text-blue-400">run</span>, and <span className="text-purple-400">reimagine</span><br />
+    front-end code with real-time JavaScript compilation 
 
-      {/*Creating a New Project */}
-      {isCreateModelShow &&
-        <div className="createModelCon fixed top-0 left-0 right-0 bottom-0 w-screen h-screen bg-[rgb(0,0,0,0.1)] flex items-center justify-center">
-          <div className="createModel w-[25vw] h-[25vh] shadow-lg shadow-black/50 bg-[#141414] rounded-[10px] p-[20px]">
-            <h3 className=''>Create New Project</h3>
-            <div className="inputBox !bg-[#202020] mt-4">
-              <input onChange={(e) => { setProjTitle(e.target.value) }} value={projTitle} type="text" placeholder='Project Title'/>
-            </div>
-            <div className='flex items-center gap-[10px] w-full mt-2'>
-              <button onClick={createProj} className='btnBlue rounded-[5px] w-[49%] mb-4 !p-[5px] !px-[10px] !py-[10px]'>Create</button>
-              <button onClick={() => { setIsCreateModelShow(false) }} className='btnBlue !bg-[#1A1919] rounded-[5px] mb-4 w-[49%] !p-[5px] !px-[10px] !py-[10px]'>Cancel</button>
-            </div>
-          </div>
-        </div>
-      }
+  </h1>
+   <p className="mt-6 text-center text-lg text-gray-300 max-w-2xl font-light animate-fadeInUp delay-100">
+   This Code Editor is a social development environment for front-end designers and developers. Build a static website, 
+   show off your work, build test cases to learn and debug, and find inspiration.
+  </p>
+   <div className="mt-12">
+  <div className="main-btn">
+    <button onClick={handleStartCoding}  className="border border-purple-500 text-white px-6 py-3 rounded-lg  hover:text-white transition-all duration-300 shadow-lg hover:shadow-purple-500/40">
+      Start coding
+    </button>
+  </div>
+</div>
+<div className='registration'>
+  <button onClick={handleSignUp} className="border border-purple-500 text-white px-6 py-3 rounded-lg  hover:text-white transition-all duration-300 shadow-lg hover:shadow-purple-500/40">SignUp Here </button>
+
+</div>
+<div>
+</div>
+</div>
+
     </>
-  );
+  )
 }
 
-export default Home;
+export default Dashboard

@@ -9,7 +9,7 @@ const ListCard = ({ item }) => {
   const [isDeleteModelShow, setIsDeleteModelShow] = useState(false);
 
   const deleteProj = (id) => {
-    fetch(api_base_url + "/deleteProject", {
+    fetch(api_base_url + "/deleteProject",{
       mode: "cors",
       method: "POST",
       headers: {
@@ -62,3 +62,4 @@ const ListCard = ({ item }) => {
 }
 
 export default ListCard
+

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import logo from "../images/logo.jpeg"
 import { Link, useNavigate } from 'react-router-dom';
-import image from "../images/authPageSide.png";
+// import image from "../images/authPageSide.png";
 import { api_base_url } from '../helper';
 import { toast } from 'react-toastify';
+import Navbar from '../components/Navbar';
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -42,13 +43,14 @@ const SignUp = () => {
 
   return (
     <>
-      <div className="container w-screen min-h-screen flex items-center justify-between pl-[100px]">
-        <div className="left w-[35%]">
-           <div className="flex items-center gap-2">
-                   <img className="w-[60px]" src={logo} alt="" />
-                  <h1 className="text-white text-2xl font-semibold">Gradious</h1>
+     <Navbar></Navbar>
+      <div className=" login-container w-screen min-h-screen flex items-center justify-center bg-[#0D0C0C]] mt-0 pt-0">
+        <div className="w-[400px]">
+           <div className="flex items-center gap-2 justify-center mb-6">
+                   {/* <img className="w-[60px]" src={logo} alt="" /> */}
+               <h1 className="text-white text-2xl font-semibold ">Sign Up</h1>
           </div>
-          <form onSubmit={submitForm} className='w-full mt-[60px]' action="">
+          <form onSubmit={submitForm} className='w-full' action="">
             <div className="inputBox">
               <input required onChange={(e)=>{setUsername(e.target.value)}} value={username} type="text" placeholder='Username'/>
             </div>
@@ -72,9 +74,9 @@ const SignUp = () => {
             <button className="btnBlue w-full mt-[20px]">Sign Up</button>
           </form>
         </div>
-        <div className="right w-[55%]">
+        {/* <div className="right w-[55%]">
           <img className='h-[100vh] w-[100%] object-cover' src={image} alt="" />
-        </div>
+        </div> */}
       </div>
     </>
   )

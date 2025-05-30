@@ -42,10 +42,30 @@ html{
   text-align: center;
   cursor: pointer;
   font-size: 16px;
+  margin-bottom: 280px;
 }
+
+
 .btnBlue:hover{
   background-color: #0086b3;
 }
+
+.search-btn{
+   background-color: #00AEEF;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+  height: 38px;
+
+}
+
+
+
+
 .grid{
   display: flex !important;
   flex-wrap: wrap !important;
@@ -71,4 +91,11 @@ html{
 .lightMode .tabs h1,
 .lightMode .tabs p {
   color: #000 !important;
+}
+
+.registration {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+  padding-top: 50px;
 }

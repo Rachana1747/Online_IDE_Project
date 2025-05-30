@@ -7,7 +7,7 @@ import { BsGridFill } from "react-icons/bs";
 import { api_base_url, toggleClass } from '../helper';
 
 const Navbar = ({ isGridLayout, setIsGridLayout }) => {
-
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") === "true");
   const navigate = useNavigate();
 
   const [data, setData] = useState(null);
@@ -39,7 +39,6 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
     localStorage.removeItem("isLoggedIn");
     window.location.reload();
   }
-
   return (
     <>
 <div className="navbar w-full z-50 flex items-center justify-between px-[100px] h-[80px] bg-[#141414]">
@@ -50,14 +49,27 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
           </div>
         </div>
         <div className="links flex items-center gap-4">
-         <Link className='hover:text-gray-300'>Home</Link>
-         <Link className='hover:text-gray-300'>About</Link>
-          <Link className='hover:text-gray-300'>Contact</Link>
-        
-          {/* <button onClick={logout} className='btnBlue !bg-red-400 min-w-[50px] ml-2 '>Logout</button> */}
-          <Avatar onClick={() => { toggleClass(".dropDownNavbar", "hidden") }} name={data ? data.name : ""} size="40" round="50%" className=' cursor-pointer ml-2' />
-        </div>
+          <Link className='hover:text-gray-300'>About</Link>
+         <Link className='hover:text-gray-300'>Contact</Link>
 
+       {isLoggedIn ? (
+        <>
+          <Link to='/dashboard' className='hover:text-gray-300'>Dashboard</Link>
+         <Avatar
+           onClick={() => toggleClass(".dropDownNavbar", "hidden")}
+           name={data ? data.name : ""}
+           size="40"
+           round="50%"
+           className='cursor-pointer ml-2'
+         />
+         </>
+       ) : (
+       <button
+        onClick={() => navigate("/login")}
+        className='ml-4 px-3 py-1 border border-white text-white rounded hover:text-white transition-all duration-300 shadow-lg hover:shadow-purple-500/40'
+      >Login or SignUp</button>
+  )}
+    </div>
         <div className='dropDownNavbar hidden absolute right-[60px] top-[80px] shadow-lg shadow-black/50 p-[10px] rounded-lg bg-[#1A1919] w-[150px] h-[150px]'>
           <div className='py-[10px] border-b-[1px] border-b-[#fff]'>
             <h3 className='text-[17px]' style={{ lineHeight: 1 }}>{data ? data.name : ""}</h3>
