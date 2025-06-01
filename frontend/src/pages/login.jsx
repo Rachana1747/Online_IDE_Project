@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import logo from "../images/logo.jpeg"
 import { Link, useNavigate } from 'react-router-dom';
-import image from "../images/authPageSide.png";
 import { api_base_url } from '../helper';
 import Navbar from '../components/Navbar';
 

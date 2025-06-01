@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import logo from "../images/logo.jpeg";
+import logo from "../images/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
 import Avatar from 'react-avatar';
 import { IoMdLogOut } from "react-icons/io";

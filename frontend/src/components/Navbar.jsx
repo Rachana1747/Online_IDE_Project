@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import logo from "../images/logo.jpeg"
+import logo from "../images/logo.png"
 import { Link, useNavigate } from 'react-router-dom'
 import Avatar from 'react-avatar';
 import { IoMdLogOut } from "react-icons/io";
@@ -41,7 +41,7 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
   }
   return (
     <>
-<div className="navbar w-full z-50 flex items-center justify-between px-[100px] h-[80px] bg-[#141414]">
+<div className="navbar fixed top-0 left-0 w-full z-50 flex items-center justify-between px-[100px] h-[80px] bg-[#141414]">
         <div className="logo">
           <div className="flex items-center gap-2">
                 <img className="w-[40px]" src={logo} alt="" />
