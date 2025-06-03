@@ -155,6 +155,12 @@ const Editior = () => {
   }, [projectID]);
 
 const handleSave = () => {
+  const userId = localStorage.getItem("userId");
+
+  if (!userId) {
+    toast.warning("Please login or signup to save your code.");
+    return;
+  }
   
   fetch(api_base_url + "/updateProject",{
     mode: "cors",
@@ -188,6 +194,11 @@ useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault();
+      const userId = localStorage.getItem("userId");
+      if (!userId) {
+         toast.warning("Please login or signup to save your code.");
+         return;
+       }  
         fetch(api_base_url + "/updateProject", {
           mode: "cors",
           method: "POST",

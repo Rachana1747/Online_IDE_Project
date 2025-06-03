@@ -42,11 +42,11 @@ const SignUp = () => {
   return (
     <>
      <Navbar></Navbar>
-      <div className=" login-container w-screen min-h-screen flex items-center justify-center bg-[#0D0C0C]] mt-0 pt-0">
+      <div className="w-screen min-h-screen flex items-center justify-center bg-[#0D0C0C]] mt-0 pt-0">
         <div className="w-[400px]">
            <div className="flex items-center gap-2 justify-center mb-6">
                    {/* <img className="w-[60px]" src={logo} alt="" /> */}
-               <h1 className="text-white text-2xl font-semibold ">Sign Up</h1>
+             <h1 className="text-white text-2xl font-semibold ">Sign Up</h1>
           </div>
           <form onSubmit={submitForm} className='w-full' action="">
             <div className="inputBox">
