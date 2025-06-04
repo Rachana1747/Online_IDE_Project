@@ -23,10 +23,11 @@ const handleSignUp=()=>{
 
   </h1>
    <p className="mt-6 text-center text-lg text-gray-300 max-w-2xl font-light animate-fadeInUp delay-100">
-   This Code Editor is a social development environment for front-end designers and developers. Build a static website, 
-   show off your work, build test cases to learn and debug, and find inspiration.
+   Build beautiful static websites, run JavaScript instantly, and fix bugs easily. Whether you're trying new ideas, showing your work, or looking for
+    inspiration — this editor is your creative space. Code it.
+   Run it. Share it. Let others explore and clone your project to make it their own.
   </p>
-   <div className="mt-12">
+   <div className="mt-6">
   <div className="main-btn">
     <button onClick={handleStartCoding}  className="border border-purple-500 text-white px-6 py-3 rounded-lg  hover:text-white transition-all duration-300 shadow-lg hover:shadow-purple-500/40">
       Start coding

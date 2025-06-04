@@ -164,21 +164,4 @@ router.post("/updateProject", async (req, res) => {
   }
 });
 
-// router.post("/updateProjectTitle", async (req, res) => {
-//   const { progId, userId, newTitle } = req.body;
-
-//   try {
-//     await projectModel.updateOne(
-//       { _id: progId, createdBy: userId },
-//       { $set: { title: newTitle } }
-//     );
-//     res.json({ success: true, message: "Project title updated" });
-//   } catch (err) {
-//     console.error(err);
-//     res.json({ success: false, message: "Update failed" });
-//   }
-// });
-
-
-
 module.exports = router;

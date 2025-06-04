@@ -62,10 +62,6 @@ html{
   height: 38px;
 
 }
-
-
-
-
 .grid{
   display: flex !important;
   flex-wrap: wrap !important;
@@ -94,8 +90,8 @@ html{
 }
 
 .registration {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   display: flex;
   justify-content: flex-start;
-  padding-top: 50px;
+  padding-top: 20px;
 }

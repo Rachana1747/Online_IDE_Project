@@ -42,7 +42,7 @@ const HomeNavbar= () => {
 
   return (
     <>
-      <div className="EditiorNavbar flex items-center justify-between px-[100px] h-[80px] bg-[#141414]">
+      <div className="EditiorNavbar flex items-center justify-between px-[18px] h-[80px] bg-[#141414]">
         <div className="logo">
           <div className="flex items-center gap-2">
             <img className="w-[40px]" src={logo} alt="Logo" />

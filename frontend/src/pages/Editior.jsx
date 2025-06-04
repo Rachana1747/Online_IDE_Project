@@ -7,6 +7,8 @@ import { api_base_url } from '../helper';
 import { useParams } from 'react-router-dom';
 import { IoIosSave } from "react-icons/io";
 import { toast } from 'react-toastify';
+import { IoShareSocial } from "react-icons/io5";
+import { FaRegClone } from "react-icons/fa";
 
 
 const Editior = () => {
@@ -215,6 +217,7 @@ useEffect(() => {
         })
         .then(res => res.json())
         .then(data => {
+          console.log(data)
           if (data.success) {
             toast.success("Project saved successfully!");
           } else {
@@ -264,7 +267,7 @@ useEffect(() => {
       <EditiorNavbar />
       <div className="flex">
         <div className={`left w-[${isExpanded ? "100%" : "50%"}]`}>
-          <div className="tabs flex items-center justify-between gap-2 w-full bg-[#1A1919] h-[50px] px-[40px]">
+          <div className="tabs flex items-center justify-between gap-2 w-full bg-[#1A1919] h-[50px] px-[20px]">
             <div className="tabs flex items-center gap-2">
               <div onClick={() => setTab("html")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
                 ${tab === "html" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>HTML</div>
@@ -279,7 +282,8 @@ useEffect(() => {
                 ))}
               </select>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <button className='px-4 py-1 hover:bg-gray-600 flex items-center gap-1'>clone<span><i className='text-[20px] cursor-pointer'><FaRegClone /></i></span></button>
               <i className="text-[20px] cursor-pointer" onClick={handleSave}><IoIosSave /></i>
               <i className="text-[20px] cursor-pointer" onClick={changeTheme}><MdLightMode /></i>
               <i className="text-[20px] cursor-pointer" onClick={() => { setIsExpanded(!isExpanded); }}><AiOutlineExpandAlt /></i>
@@ -339,10 +343,13 @@ useEffect(() => {
                     run();
                   }}>Console</button>
               </div>
-              <button
-                className="px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e]"
-                onClick={run}>Run</button>
-            </div>
+             <div className="flex gap-4">
+            <button className="px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] flex items-center gap-1">Share <span><IoShareSocial /></span>
+            </button>
+          <button className="px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e]" 
+          onClick={run}>Run</button>
+          </div>
+         </div>
             {rightTab === "output" ? (
               <iframe
                 title="output"
@@ -365,3 +372,7 @@ useEffect(() => {
 };
 
 export default Editior;
+
+
+
+

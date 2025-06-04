@@ -41,7 +41,7 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
   }
   return (
     <>
-<div className="navbar fixed top-0 left-0 w-full z-50 flex items-center justify-between px-[100px] h-[80px] bg-[#141414]">
+<div className="navbar fixed top-0 left-0 w-full z-50 flex items-center justify-between px-[20px] h-[80px] bg-[#141414]">
         <div className="logo">
           <div className="flex items-center gap-2">
                 <img className="w-[40px]" src={logo} alt="" />
@@ -77,9 +77,10 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
           <i onClick={() => setIsGridLayout(!isGridLayout)} className='flex items-center gap-2 mt-3 mb-2 cursor-pointer' style={{ fontStyle: "normal" }}><BsGridFill className='text-[20px]' /> {isGridLayout ? "List" : "Grid"} layout</i>
           <i onClick={logout} className='flex items-center gap-2 mt-3 mb-2 cursor-pointer' style={{ fontStyle: "normal" }}><IoMdLogOut  className='text-[20px]' />Log Out</i>
         </div>
+
+
       </div>
     </>
   )
 }
-
-export default Navbar
+export default Navbar;
