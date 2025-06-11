@@ -6,6 +6,7 @@ var userModel = require("../models/userModel");
 var projectModel = require("../models/projectModel");
 
 
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
@@ -163,5 +164,77 @@ router.post("/updateProject", async (req, res) => {
     return res.json({ success: false, message: "User not found!" });
   }
 });
+
+
+router.post("/shareProject", async (req, res) => {
+  const { projectId } = req.body;
+
+  try {
+    const project = await projectModel.findById(projectId);
+
+    if (!project) return res.status(404).json({ message: "Project not found" });
+
+    const sharedProject = new projectModel({ 
+      htmlCode: project.htmlCode,
+      cssCode: project.cssCode,
+      jsCode: project.jsCode,
+      title: project.title,
+      createdBy: project.createdBy,
+      isPublic: true,
+    });
+
+    await sharedProject.save();
+
+    res.status(200).json({ shareId: sharedProject._id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+router.get("/sharedProject/:projectId", async (req, res) => {
+  const { projectId } = req.params;
+
+  try {
+    const project = await projectModel.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    return res.json({ success: true, project });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/cloneProject", async (req, res) => {
+  const { userId, htmlCode, cssCode, jsCode, sharedProjectId } = req.body;
+
+  try {
+    // Check if user exists
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found!" });
+    }
+
+    // Create a new project for the user using the provided code
+    const newProject = new projectModel({
+      createdBy: userId,
+      htmlCode,
+      cssCode,
+      jsCode,
+      title: "Cloned Project", // Optional: can customize or accept from client
+    });
+
+    await newProject.save();
+
+    return res.status(200).json({ success: true, sharedProjectId }); // Return original shared ID
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
 
 module.exports = router;

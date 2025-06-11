@@ -49,7 +49,7 @@ const EditiorNavbar = () => {
             <h1 className="text-white text-2xl font-semibold">Gradious</h1>
           </div>
         </div>
-        <p className="text-white">Welcome, Do your Own Code!!</p>
+        {/* <p className="text-white">Welcome, Do your Own Code!!</p> */}
         <div className="links flex items-center gap-4">
          
     {isLoggedIn ? (

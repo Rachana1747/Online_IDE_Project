@@ -11,7 +11,7 @@ import { IoShareSocial } from "react-icons/io5";
 import { FaRegClone } from "react-icons/fa";
 
 
-const Editior = () => {
+const Editior = ({ hideSave = false, hideClone = true }) => {
   const [tab, setTab] = useState("html");
   const [isLightMode, setIsLightMode] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -156,51 +156,51 @@ const Editior = () => {
       });
   }, [projectID]);
 
-const handleSave = () => {
-  const userId = localStorage.getItem("userId");
+  const handleSave = () => {
+    const userId = localStorage.getItem("userId");
 
-  if (!userId) {
-    toast.warning("Please login or signup to save your code.");
-    return;
-  }
-  
-  fetch(api_base_url + "/updateProject",{
-    mode: "cors",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      userId: localStorage.getItem("userId"),
-      projId: projectID,
-      htmlCode: htmlCode,
-      cssCode: cssCode,
-      jsCode: jsCode
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-        toast.success("Project saved successfully!");
-    } else {
-       toast.error("Something went wrong while saving.");
+    if (!userId) {
+      toast.warning("Please login or signup to save your code.");
+      return;
     }
-  })
-  .catch((err) => {
-    console.error("Error saving project:", err);
-    toast.error("Failed to save project. Try again.");
-  });
-};
 
-useEffect(() => {
+    fetch(api_base_url + "/updateProject",{
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userId: localStorage.getItem("userId"),
+        projId: projectID,
+        htmlCode: htmlCode,
+        cssCode: cssCode,
+        jsCode: jsCode
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+          toast.success("Project saved successfully!");
+      } else {
+         toast.error("Something went wrong while saving.");
+      }
+    })
+    .catch((err) => {
+      console.error("Error saving project:", err);
+      toast.error("Failed to save project. Try again.");
+    });
+  };
+
+  useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === 's') {
         event.preventDefault();
-      const userId = localStorage.getItem("userId");
-      if (!userId) {
-         toast.warning("Please login or signup to save your code.");
-         return;
-       }  
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          toast.warning("Please login or signup to save your code.");
+          return;
+        }
         fetch(api_base_url + "/updateProject", {
           mode: "cors",
           method: "POST",
@@ -262,7 +262,85 @@ useEffect(() => {
     { name: "GSAP", url: "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js" }
   ];
 
-  return (
+
+const handleShare = async () => {
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    toast.warning("Please login to share your project.");
+    return;
+  }
+
+  if (!projectID) {
+    toast.warning("Please save the project before sharing.");
+    return;
+  }
+
+  try {
+    const shareUrl = `${window.location.origin}/share/${projectID}`;
+    await navigator.clipboard.writeText(shareUrl);
+    toast.success("Shareable link copied to clipboard!");
+  } catch (error) {
+    toast.error("Something went wrong while sharing.");
+    console.error(error);
+  }
+};
+
+
+const { projectId } = useParams();
+useEffect(() => {
+  fetch(`${api_base_url}/sharedProject/${projectId}`, {
+    method: "GET",
+  })
+  .then((res) => {
+    // if (!res.ok) throw new Error("Failed to fetch shared project");
+    return res.json();
+  })
+  .then((data) => {
+    if (data.success && data.project) {
+      setHtmlCode(data.project.htmlCode);
+      setCssCode(data.project.cssCode);
+      setJsCode(data.project.jsCode);
+    } 
+  })
+  .catch((err) => {
+    toast.error(err.message || "Error loading shared project");
+  });
+}, [projectId]);
+
+
+const handleClone = async () => {
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    toast.warning("Please login to clone this project.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${api_base_url}/cloneProject`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId,
+        htmlCode,
+        cssCode,
+        jsCode,
+      }),
+    });
+
+   const data = await response.json();
+     if (response.ok && data.success && data.newProjectId) {  
+    window.location.href = `/editor/${data.newProjectId}`; 
+   }
+   toast.success("Project cloned successfully.");
+  
+  } catch (error) {
+    console.error(error);
+    toast.error("An error occurred while cloning.");
+  }
+};
+
+ 
+return (
     <>
       <EditiorNavbar />
       <div className="flex">
@@ -283,8 +361,13 @@ useEffect(() => {
               </select>
             </div>
             <div className="flex items-center gap-3">
-              <button className='px-4 py-1 hover:bg-gray-600 flex items-center gap-1'>clone<span><i className='text-[20px] cursor-pointer'><FaRegClone /></i></span></button>
-              <i className="text-[20px] cursor-pointer" onClick={handleSave}><IoIosSave /></i>
+              {!hideClone && ( <button onClick={handleClone} className='px-4 py-1 hover:bg-gray-600 flex items-center gap-1'>
+              clone<span><i className='text-[20px] cursor-pointer'><FaRegClone /></i></span></button>
+             )}
+
+              {!hideSave && (
+                <i className="text-[20px] cursor-pointer" onClick={handleSave}><IoIosSave /></i>
+              )}
               <i className="text-[20px] cursor-pointer" onClick={changeTheme}><MdLightMode /></i>
               <i className="text-[20px] cursor-pointer" onClick={() => { setIsExpanded(!isExpanded); }}><AiOutlineExpandAlt /></i>
             </div>
@@ -344,8 +427,8 @@ useEffect(() => {
                   }}>Console</button>
               </div>
              <div className="flex gap-4">
-            <button className="px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] flex items-center gap-1">Share <span><IoShareSocial /></span>
-            </button>
+            <button className="px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e] flex items-center gap-1" onClick={handleShare}> Share <span><IoShareSocial /></span>
+        </button>
           <button className="px-4 py-1 border border-gray-600 hover:bg-[#5b5d5e]" 
           onClick={run}>Run</button>
           </div>
@@ -372,7 +455,4 @@ useEffect(() => {
 };
 
 export default Editior;
-
-
-
 

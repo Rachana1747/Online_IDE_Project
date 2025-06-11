@@ -9,6 +9,7 @@ import Editior from './pages/Editior';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Dashboard from './pages/Dashboard';
+import SharedEditor from './pages/SharedEditor';
 
 const App = () => {
   let isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -16,13 +17,14 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-           <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <Navigate to="/login"/>} />
-           <Route path='/' element={<Home/>}/>
+          <Route path='/dashboard' element={isLoggedIn ? <Dashboard /> : <Navigate to="/login"/>} />
+          <Route path='/' element={<Home/>}/>
           <Route path='/signUp' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/editor/:projectID' element={isLoggedIn ? <Editior /> : <Navigate to="/login"/>} />
           <Route path="*" element={isLoggedIn ? <NoPage />: <Navigate to="/login"/>} />
           <Route path='/editor' element={<Editior/>}/>
+          <Route path="/share/:projectId" element={<SharedEditor />} />
         </Routes>
       </BrowserRouter>
        <ToastContainer 
