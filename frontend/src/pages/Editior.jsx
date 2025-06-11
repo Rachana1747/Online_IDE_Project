@@ -24,7 +24,6 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
       <title>Document</title>
     </head>
     <body>
-    
     </body>
 </html>`);
   const [cssCode, setCssCode] = useState( `body{
@@ -284,7 +283,6 @@ const handleShare = async () => {
     console.error(error);
   }
 };
-
 
 const { projectId } = useParams();
 useEffect(() => {

@@ -99,8 +99,6 @@ router.post("/createProject", async (req, res) => {
       title: title,
       createdBy: userId
     });
-
-
     return res.json({ success: true, message: "Project created successfully", projectId: project._id });
   }
   else {
@@ -152,7 +150,7 @@ router.post("/updateProject", async (req, res) => {
     let project = await projectModel.findOneAndUpdate(
       { _id: projId },
       { htmlCode: htmlCode, cssCode: cssCode, jsCode: jsCode },
-      { new: true } // This option returns the updated document
+      { new: true }
     );
 
     if (project) {
@@ -212,27 +210,49 @@ router.post("/cloneProject", async (req, res) => {
   const { userId, htmlCode, cssCode, jsCode, sharedProjectId } = req.body;
 
   try {
-    // Check if user exists
     const user = await userModel.findById(userId);
     if (!user) {
       return res.status(404).json({ success: false, message: "User not found!" });
     }
-
-    // Create a new project for the user using the provided code
     const newProject = new projectModel({
       createdBy: userId,
       htmlCode,
       cssCode,
       jsCode,
-      title: "Cloned Project", // Optional: can customize or accept from client
+      title: "Cloned Project",
     });
 
     await newProject.save();
 
-    return res.status(200).json({ success: true, sharedProjectId }); // Return original shared ID
+    return res.status(200).json({ success: true, sharedProjectId }); 
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: "Internal server error" });
+  }
+});
+
+router.put("/updateProjectTitle", async (req, res) => {
+  const { projectId, newTitle } = req.body;
+
+  if (!projectId || !newTitle) {
+    return res.json({ success: false, message: "Missing projectId or newTitle." });
+  }
+
+  try {
+    const updatedProject = await projectModel.findByIdAndUpdate(
+      projectId,
+      { title: newTitle },
+      { new: true }
+    );
+
+    if (!updatedProject) {
+      return res.json({ success: false, message: "Project not found!" });
+    }
+
+    return res.json({ success: true, message: "Project title updated successfully", updatedProject });
+  } catch (error) {
+    console.error("Error updating project title:", error);
+    return res.status(500).json({ success: false, message: "Server error." });
   }
 });
 

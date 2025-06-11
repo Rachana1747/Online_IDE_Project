@@ -41,7 +41,7 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
   }
   return (
     <>
-<div className="navbar fixed top-0 left-0 w-full z-50 flex items-center justify-between px-[20px] h-[80px] bg-[#141414]">
+<div className="navbar fixed top-0 left-0 w-full z-50 flex items-center justify-between px-[20px] h-[80px] bg-[#1b1b1b]">
         <div className="logo">
           <div className="flex items-center gap-2">
                 <img className="w-[40px]" src={logo} alt="" />
@@ -54,7 +54,7 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
 
        {isLoggedIn ? (
         <>
-          <Link to='/dashboard' className='hover:text-gray-300'>Dashboard</Link>
+          <Link to='/dashboard'   className='hover:text-gray-300 no-underline focus:outline-none'>Dashboard</Link>
          <Avatar
            onClick={() => toggleClass(".dropDownNavbar", "hidden")}
            name={data ? data.name : ""}
