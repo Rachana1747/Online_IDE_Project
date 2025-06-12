@@ -70,7 +70,7 @@ const Navbar = ({ isGridLayout, setIsGridLayout }) => {
       >Login or SignUp</button>
   )}
     </div>
-        <div className='dropDownNavbar hidden absolute right-[60px] top-[80px] shadow-lg shadow-black/50 p-[10px] rounded-lg bg-[#1A1919] w-[150px] h-[150px]'>
+        <div className='dropDownNavbar hidden absolute right-[15px] top-[90px] shadow-lg shadow-black/50 p-[10px] rounded-lg bg-[#1A1919] w-[150px] h-[150px]'>
           <div className='py-[10px] border-b-[1px] border-b-[#fff]'>
             <h3 className='text-[17px]' style={{ lineHeight: 1 }}>{data ? data.name : ""}</h3>
           </div>

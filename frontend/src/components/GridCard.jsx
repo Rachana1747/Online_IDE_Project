@@ -111,7 +111,7 @@ const GridCard = ({item}) => {
        {
         isEditModalOpen ? (
           <div className='model fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.1)] flex justify-center items-center flex-col'>
-            <div className='mainModel w-[20vw] h-[20vh] bg-[#141414] rounded-lg p-[20px]'>
+            <div className='mainModel w-[20vw] h-[25vh] bg-[#141414] rounded-lg p-[20px]'>
               <h4 className='text-white mb-4'>Edit the project Title</h4>
               <input
                 type="text"
