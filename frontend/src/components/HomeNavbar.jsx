@@ -44,7 +44,7 @@ const HomeNavbar= () => {
     <>
       <div className="EditiorNavbar flex items-center justify-between px-[18px] h-[80px] bg-[#141414]">
         <div className="logo">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <img className="w-[40px]" src={logo} alt="Logo" />
             <h1 className="text-white text-2xl font-semibold">Gradious</h1>
           </div>
@@ -53,7 +53,11 @@ const HomeNavbar= () => {
          
     {isLoggedIn ? (
       <>
+       <div className='flex items-center gap-7'>
+      <Link to='/' className='hover:text-gray-300'>About</Link>
+      <Link to='/' className='hover:text-gray-300'>ContactUs</Link>
       <Link to='/dashboard' className='hover:text-gray-300'>Dashboard</Link>
+      </div>
        <Avatar
        onClick={() => toggleClass(".dropDownNavbar", "hidden")}
        name={data ? data.name : ""}
@@ -64,7 +68,11 @@ const HomeNavbar= () => {
     </>
     ) : (
       <>
+      <div className='flex items-center gap-7'>
+      <Link to='/' className='hover:text-gray-300'>About</Link>
+      <Link to='/' className='hover:text-gray-300'>ContactUs</Link>
       <Link to='/' className='hover:text-gray-300'>Home</Link>
+      </div>
     <button
       onClick={() => navigate("/login")}
       className='ml-4 px-3 py-1 border border-white text-white rounded transition'>Login</button>

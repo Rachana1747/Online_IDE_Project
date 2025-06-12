@@ -85,7 +85,6 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
         }
       })();
     `;
-
     const iframe = hiddenIframeRef.current;
     const doc = iframe.contentWindow.document;
 
@@ -108,25 +107,29 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
     setOutputSrcDoc(combinedCode);
   };
 
-  const insertLibrary = (url) => {
-    if (editorRef.current) {
-      const editor = editorRef.current;
-      const selection = editor.getSelection();
-      const range = {
-        startLineNumber: selection.startLineNumber,
-        startColumn: selection.startColumn,
-        endLineNumber: selection.endLineNumber,
-        endColumn: selection.endColumn,
-      };
-      const tag = url.endsWith('.js')
-        ? `<script src=\"${url}\"></script>`
-        : `<link rel=\"stylesheet\" href=\"${url}\" />`;
-      editor.executeEdits("insert-library", [
-        { range, text: tag, forceMoveMarkers: true }
-      ]);
-    }
-  };
 
+
+ const insertLibrary = (url, activeTab) => {
+  if (editorRef.current && activeTab === "html") {
+    const editor = editorRef.current;
+    const selection = editor.getSelection();
+    const range = {
+      startLineNumber: selection.startLineNumber,
+      startColumn: selection.startColumn,
+      endLineNumber: selection.endLineNumber,
+      endColumn: selection.endColumn,
+    };
+    const tag = url.endsWith('.js')
+      ? `<script src="${url}"></script>`
+      : `<link rel="stylesheet" href="${url}" />`;
+
+    editor.executeEdits("insert-library", [
+      { range, text: tag, forceMoveMarkers: true }
+    ]);
+  } else {
+    toast.warning("Libraries can only be inserted into the HTML editor.");
+  }
+};
   useEffect(() => {
     const timeout = setTimeout(() => {
       run();
@@ -351,7 +354,7 @@ return (
                 ${tab === "css" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>CSS</div>
               <div onClick={() => setTab("js")} className={`tab cursor-pointer p-[6px] px-[10px] text-[15px] 
                 ${tab === "js" ? "bg-gray-600" : "bg-[#1E1E1E] hover:bg-gray-600"}`}>JavaScript</div>
-              <select className=" tab ml-2 bg-[#1E1E1E] text-white  px-2 py-1 text-sm" onChange={(e) => insertLibrary(e.target.value)}>
+              <select className=" tab ml-2 bg-[#1E1E1E] text-white  px-2 py-1 text-sm" onChange={(e) => insertLibrary(e.target.value,tab)}>
                 <option value="">Add Library</option>
                 {libraryOptions.map((lib, idx) => (
                   <option key={idx} value={lib.url}>{lib.name}</option>

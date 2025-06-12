@@ -96,8 +96,8 @@ const ListCard = ({ item }) => {
         </div>
 
         <div className="flex items-center gap-6">
-          <button><FaRegClone className="w-[17px] h-[20px] text-[gray]" onClick={handleShare} /></button>
-          <button onClick={(e) => {
+          <button title='copy link'><FaRegClone className="w-[17px] h-[20px] text-[gray]" onClick={handleShare} /></button>
+          <button title='Edit the title' onClick={(e) => {
             e.stopPropagation();
             setNewTitle(item.title);
             setIsEditModalOpen(true);

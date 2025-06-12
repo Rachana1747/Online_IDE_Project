@@ -44,7 +44,7 @@ const EditiorNavbar = () => {
     <>
       <div className="EditiorNavbar flex items-center justify-between px-[18px] h-[60px] bg-[#1b1b1b]">
         <div className="logo">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <img className="w-[40px]" src={logo} alt="Logo" />
             <h1 className="text-white text-2xl font-semibold">Gradious</h1>
           </div>
