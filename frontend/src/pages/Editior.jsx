@@ -31,6 +31,8 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
       padding: 0;
       box-sizing: border-box;
 }`);
+
+
   const [jsCode, setJsCode] = useState(`console.log("Hello world")`);
   const [rightTab, setRightTab] = useState("output");
   const [consoleLogs, setConsoleLogs] = useState([]);
@@ -66,6 +68,7 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
       }
     };
   }, []);
+
 
   const run = () => {
     setConsoleLogs([]);
@@ -130,6 +133,8 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
     toast.warning("Libraries can only be inserted into the HTML editor.");
   }
 };
+
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       run();
@@ -157,6 +162,7 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
         setJsCode(data.project.jsCode);
       });
   }, [projectID]);
+
 
   const handleSave = () => {
     const userId = localStorage.getItem("userId");
@@ -194,6 +200,7 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
     });
   };
 
+  
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === 's') {
@@ -239,6 +246,7 @@ const Editior = ({ hideSave = false, hideClone = true }) => {
     };
   }, [projectID, htmlCode, cssCode, jsCode]);
 
+
   useEffect(() => {
     const handleMessage = (event) => {
       if (event.data.type === "console") {
@@ -271,12 +279,10 @@ const handleShare = async () => {
     toast.warning("Please login to share your project.");
     return;
   }
-
   if (!projectID) {
     toast.warning("Please save the project before sharing.");
     return;
   }
-
   try {
     const shareUrl = `${window.location.origin}/share/${projectID}`;
     await navigator.clipboard.writeText(shareUrl);
@@ -361,7 +367,7 @@ return (
                 ))}
               </select>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               {!hideClone && ( <button onClick={handleClone} className='px-4 py-1 hover:bg-gray-600 flex items-center gap-1'>
               clone<span><i className='text-[20px] cursor-pointer'><FaRegClone /></i></span></button>
              )}
@@ -370,7 +376,7 @@ return (
                 <i className="text-[20px] cursor-pointer" onClick={handleSave}><IoIosSave /></i>
               )}
               <i className="text-[20px] cursor-pointer" onClick={changeTheme}><MdLightMode /></i>
-              <i className="text-[20px] cursor-pointer" onClick={() => { setIsExpanded(!isExpanded); }}><AiOutlineExpandAlt /></i>
+              <i className="text-[23px] cursor-pointer" onClick={() => { setIsExpanded(!isExpanded); }}><AiOutlineExpandAlt /></i>
             </div>
           </div>
 
@@ -409,6 +415,11 @@ return (
             />
           )}
         </div>
+        
+
+
+
+
 
         {!isExpanded && (
           <div className="w-[50%] min-h-[86vh] flex flex-col bg-white text-black">

@@ -46,7 +46,7 @@ const HomeNavbar= () => {
         <div className="logo">
           <div className="flex items-center gap-4">
             <img className="w-[40px]" src={logo} alt="Logo" />
-            <h1 className="text-white text-2xl font-semibold">Gradious</h1>
+            <h1 className="text-white text-3xl font-semibold">Gradious</h1>
           </div>
         </div>
         <div className="links flex items-center gap-4">

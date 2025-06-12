@@ -34,7 +34,7 @@ const App = () => {
         closeOnClick
         pauseOnHover
         draggable
-        theme="colored"
+        //theme="colored"
       />
     </>
   )

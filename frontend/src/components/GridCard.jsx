@@ -76,10 +76,10 @@ const GridCard = ({item}) => {
 
 
      <div className="flex items-center gap-4">
-         <button onClick={(e) => e.stopPropagation()}>
+         <button title='copy link' onClick={(e) => e.stopPropagation()}>
           <FaRegClone className="w-[17px] h-[20px] text-[gray]" onClick={handleShare} />
          </button>
-          <button onClick={(e) => {
+          <button title='Edit the title' onClick={(e) => {
             e.stopPropagation();
             setNewTitle(item.title);
             setIsEditModalOpen(true);
@@ -100,9 +100,9 @@ const GridCard = ({item}) => {
           <div className="mainModel w-[20vw] h-[20vh] bg-[#141414] rounded-lg p-[20px]">
             <h4 className=''>Do you want to delete <br />
               this project</h4>
-            <div className='flex w-full mt-5 items-center gap-[10px]'>
-              <button className='p-[10px] rounded-lg bg-[#FF4343] text-white cursor-pointer min-w-[49%]'>Delete</button>
+            <div className='flex w-full mt-5 items-center gap-[10px]'>   
               <button onClick={()=>{setIsDeleteModelShow(false)}} className='p-[10px] rounded-lg bg-[#1A1919] text-white cursor-pointer min-w-[49%]'>Cancel</button>
+               <button className='p-[10px] rounded-lg bg-[#FF4343] text-white cursor-pointer min-w-[49%]'>Delete</button>
             </div>
           </div>
         </div> : ""
@@ -120,8 +120,8 @@ const GridCard = ({item}) => {
                 className="w-full p-2 rounded bg-[#1A1A1A] text-white"
               />
               <div className='flex w-full mt-5 items-center gap-[10px]'>
+                <button  onClick={() => { setIsEditModalOpen(false) }} className='p-[10px] rounded-lg bg-[#1A1919] text-white cursor-pointer min-w-[49%]'>Cancel</button>
                 <button onClick={handleSaveEdit} className='p-[10px] rounded-lg bg-[#FF4343] text-white cursor-pointer min-w-[49%]'>Save</button>
-                <button onClick={() => { setIsEditModalOpen(false) }} className='p-[10px] rounded-lg bg-[#1A1919] text-white cursor-pointer min-w-[49%]'>Cancel</button>
               </div>
             </div>
           </div>

@@ -113,7 +113,7 @@ const Home = () => {
               onChange={(e) => setSearchQuery(e.target.value)} // Update searchQuery on input change
             />
           </div>
-          <button onClick={() => { setIsCreateModelShow(true) }} className='search-btn rounded-[5px] mb-4 text-[20px] !p-[5px] !px-[10px]'>+</button>
+          <button onClick={() => { setIsCreateModelShow(true) }} className='search-btn rounded-[5px] mb-4 text-[20px] !p-[5px] !px-[10px]'>Add</button>
         </div>
       </div>
 
@@ -147,8 +147,8 @@ const Home = () => {
               <input onChange={(e) => { setProjTitle(e.target.value) }} value={projTitle} type="text" placeholder='Project Title'/>
             </div>
             <div className='flex items-center gap-[10px] w-full mt-2'>
-              <button onClick={createProj} className='btnBlue rounded-[5px] w-[49%] mb-4 !p-[5px] !px-[10px] !py-[10px]'>Create</button>
               <button onClick={() => { setIsCreateModelShow(false) }} className='btnBlue !bg-[#1A1919] rounded-[5px] mb-4 w-[49%] !p-[5px] !px-[10px] !py-[10px]'>Cancel</button>
+              <button onClick={createProj} className='btnBlue rounded-[5px] w-[49%] mb-4 !p-[5px] !px-[10px] !py-[10px]'>Create</button>
             </div>
           </div>
         </div>

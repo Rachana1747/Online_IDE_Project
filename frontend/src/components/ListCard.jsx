@@ -116,9 +116,9 @@ const ListCard = ({ item }) => {
           <div className="model fixed top-0 left-0 w-screen h-screen bg-[rgba(0,0,0,0.1)] flex justify-center items-center flex-col">
             <div className="mainModel w-[20vw] h-[20vh] bg-[#141414] rounded-lg p-[20px]">
               <h4>Do you want to delete <br /> this project</h4>
-              <div className='flex w-full mt-5 items-center gap-[10px]'>
-                <button onClick={() => { deleteProj(item._id) }} className='p-[10px] rounded-lg bg-[#FF4343] text-white cursor-pointer min-w-[49%]'>Delete</button>
+              <div className='flex w-full mt-5 items-center gap-[10px]'>  
                 <button onClick={() => { setIsDeleteModelShow(false) }} className='p-[10px] rounded-lg bg-[#1A1919] text-white cursor-pointer min-w-[49%]'>Cancel</button>
+                <button onClick={() => { deleteProj(item._id) }} className='p-[10px] rounded-lg bg-[#FF4343] text-white cursor-pointer min-w-[49%]'>Delete</button>
               </div>
             </div>
           </div>
@@ -136,9 +136,9 @@ const ListCard = ({ item }) => {
                 onChange={(e) => setNewTitle(e.target.value)}
                 className="w-full p-2 rounded bg-[#1A1A1A] text-white"
               />
-              <div className='flex w-full mt-5 items-center gap-[10px]'>
-                <button onClick={handleSaveEdit} className='p-[10px] rounded-lg bg-[#FF4343] text-white cursor-pointer min-w-[49%]'>Save</button>
+              <div className='flex w-full mt-5 items-center gap-[10px]'> 
                 <button onClick={() => { setIsEditModalOpen(false) }} className='p-[10px] rounded-lg bg-[#1A1919] text-white cursor-pointer min-w-[49%]'>Cancel</button>
+                <button onClick={handleSaveEdit} className='p-[10px] rounded-lg bg-[#FF4343] text-white cursor-pointer min-w-[49%]'>Save</button>
               </div>
             </div>
           </div>
